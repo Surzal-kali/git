@@ -111,14 +111,24 @@ def pinspect(obj):
     print(inspect.getsource(obj))
 
 
+def _iter_module_names():
+    module_names = [
+        module_name
+        for _, module_name, _ in pkgutil.walk_packages(
+            MGScripts.__path__, MGScripts.__name__ + "."
+        )
+    ]
+
+    if __name__ not in module_names:
+        module_names.append(__name__)
+
+    return module_names
+
+
 def load_env():
     namespace = {}
 
-    for _, module_name, _ in pkgutil.walk_packages(
-        MGScripts.__path__, MGScripts.__name__ + "."
-    ):
-        if module_name == __name__:
-            continue
+    for module_name in _iter_module_names():
         try:
             module = importlib.import_module(module_name)
         except ImportError as err:
@@ -132,11 +142,7 @@ def load_env():
                 namespace[attr] = getattr(module, attr)
 
     def reload_all():
-        for _, module_name, _ in pkgutil.walk_packages(
-            MGScripts.__path__, MGScripts.__name__ + "."
-        ):
-            if module_name == __name__:
-                continue
+        for module_name in _iter_module_names():
             try:
                 module = importlib.import_module(module_name)
             except ImportError as err:

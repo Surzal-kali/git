@@ -1,4 +1,5 @@
 import code
+import importlib.util
 import readline
 import rlcompleter
 import sys
@@ -53,6 +54,17 @@ Browse the markdown knowledge base:
     notes_search("keyword")
     notes_open("relative/path.md")
 """
+
+ROOT_NAMESPACE_KEYS = {
+    "REPO_ROOT",
+    "DOCUMENTS_ROOT",
+    "documents_env",
+    "mgscripts_env",
+    "reload_documents",
+    "reload_mgscripts",
+    "reload_all",
+    "CHEATSHEET",
+}
 
 
 def module_aware_completer(namespace):
@@ -125,39 +137,60 @@ def build_namespace():
             f"Documents submodule not found at {DOCUMENTS_ROOT}. Run 'git submodule update --init --recursive'."
         )
 
-    from Exploit_Notes.bootstrap import load_notes
-    from SurzsEnviro.bootstrap import load_env as load_documents_env
+    documents_bootstrap = DOCUMENTS_ROOT / "bootstrap.py"
+    if not documents_bootstrap.exists():
+        raise FileNotFoundError(
+            f"Documents bootstrap not found at {documents_bootstrap}."
+        )
 
-    documents_namespace = load_documents_env()
-    mgscripts_namespace = load_mgscripts_env()
-    notes_namespace = load_notes()
+    documents_spec = importlib.util.spec_from_file_location(
+        "documents_bootstrap", documents_bootstrap
+    )
+    if documents_spec is None or documents_spec.loader is None:
+        raise ImportError(f"Could not load module spec from {documents_bootstrap}")
+
+    documents_module = importlib.util.module_from_spec(documents_spec)
+    documents_spec.loader.exec_module(documents_module)
+    build_documents_namespace = documents_module.build_namespace
+    if not callable(build_documents_namespace):
+        raise ImportError(
+            f"Documents bootstrap at {documents_bootstrap} does not expose build_namespace()."
+        )
 
     namespace = {
         "REPO_ROOT": REPO_ROOT,
         "DOCUMENTS_ROOT": DOCUMENTS_ROOT,
-        "documents_env": documents_namespace,
-        "mgscripts_env": mgscripts_namespace,
     }
-    namespace.update(documents_namespace)
-    namespace.update(mgscripts_namespace)
-    namespace.update(notes_namespace)
+    scoped_exports = {"documents": set(), "mgscripts": set()}
+
+    def refresh_scope(scope_name, new_values):
+        exported_keys = set(new_values)
+        removable_keys = scoped_exports[scope_name] - exported_keys
+        for key in removable_keys:
+            if key not in ROOT_NAMESPACE_KEYS:
+                namespace.pop(key, None)
+        namespace.update(new_values)
+        scoped_exports[scope_name] = exported_keys
+        namespace[f"{scope_name}_env"] = new_values
+
+    refresh_scope("documents", build_documents_namespace())
+    refresh_scope("mgscripts", load_mgscripts_env())
 
     def reload_documents():
-        reloader = documents_namespace.get("reload_all")
+        reloader = namespace["documents_env"].get("reload_all")
         if callable(reloader):
             reloader()
+        refresh_scope("documents", build_documents_namespace())
 
     def reload_mgscripts():
-        reloader = mgscripts_namespace.get("reload_all")
+        reloader = namespace["mgscripts_env"].get("reload_all")
         if callable(reloader):
             reloader()
+        refresh_scope("mgscripts", load_mgscripts_env())
 
     def reload_all():
         reload_documents()
         reload_mgscripts()
-        reindex = namespace.get("notes_reindex")
-        if callable(reindex):
-            reindex()
 
     namespace["reload_documents"] = reload_documents
     namespace["reload_mgscripts"] = reload_mgscripts
