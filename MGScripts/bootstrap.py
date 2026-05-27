@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 import MGScripts
-
+#TODO: create amass, impacet, mitmproxy, nessus, and zap-cli scripts to be imported here. These are more resource intensive and less likely to be used in a quick and dirty way, so they get their own namespace and can be reloaded without affecting the rest of the environment.
 _scripts_path = str(Path(__file__).parent)
 if _scripts_path not in sys.path:
     sys.path.insert(0, _scripts_path)
