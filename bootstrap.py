@@ -202,7 +202,7 @@ def build_namespace():
 def launch_repl(namespace):
     try:
         from IPython import start_ipython
-    except ImportError:
+    except ImportError:from urllib3.package
         readline.parse_and_bind("tab: complete")
         readline.set_completer(module_aware_completer(namespace))
         code.interact(local=namespace, banner=CHEATSHEET)
