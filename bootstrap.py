@@ -219,16 +219,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-
-#TODO: Add recon, curl, ffuf, zap-cli automation.
-
-#catagory of tool per stage
-
-# recon, nmap (got that), masscan, subfinder, amass, httpx., fuff, dirsearch, etc.. we need to pick like 3. this is the part where python shines is digesting all that crap
-
-# vuln scannning (very important), nuclei, trixy, testssl, hakrawler, gauge, etc.. again we need to pick like 3. this is where we can really add value by parsing the results and providing insights. we already have metasploit so thats an auto #1. we can add a web vuln scanner and a general network vuln scanner to round it out. maybe we can even add some custom scripts for specific vulnerabilities that are relevant to our target profiles.
-
-#web/api exploitation, sqlmap, commix, xsser, etc.. we can add some helpers to automate common tasks with these tools and parse their results as well. maybe we can even add some custom scripts for specific vulnerabilities that are relevant to our target profiles. we can also just automate curl/httpie for quick and dirty testing of endpoints. :D
-
-# we also have sca, sbom, and secret scanning categories that we can add helpers for. these can be really useful for quickly identifying potential issues in code repositories or container images. we can integrate with tools like trufflehog, gitrob, grype, etc.. to provide a comprehensive scanning solution. that we will decide on after the above are configured. esp since they need the above to interact with.
