@@ -1,0 +1,105 @@
+# MainGit — SurzsEnviro toolkit & Exploit Notes
+
+A REPL-first operator toolkit paired with a Markdown knowledge base for offensive-security workflows.
+
+This repository bundles two complementary parts:
+
+- SurzsEnviro — a scripts-first Python toolkit (operator helpers, network utilities, packet capture, logging helpers, and small CLIs).
+- Exploit_Notes — a markdown knowledge base and notes tree (Exploit_Notes/) intended to be browsed together with the toolkit.
+- MGScripts — utility scripts used by the interactive bootstrap to expose helpers in a live REPL.
+
+This project is designed to be used interactively: the root bootstrap loads helper modules and notes into a single Python REPL so operators can combine code and notes in the same session.
+
+Quickstart
+----------
+1. Clone (preserve submodules) or update submodules if already cloned:
+
+   git clone <repo-url> --recurse-submodules
+   cd <repo-root>
+   # or if already cloned:
+   git submodule update --init --recursive
+
+2. Create and activate a virtual environment, then install dependencies (the repository uses a top-level `requirements.md` which references `Documents/requirements.md`):
+
+   python3 -m venv .venv
+   source .venv/bin/activate
+   python3 -m pip install -r requirements.md
+
+3. Launch the interactive operator console (lightweight REPL):
+
+   python3 bootstrap.py
+
+   Documents-only REPL (lighter):
+
+   python3 Documents/bootstrap.py
+
+   Optional IPython-backed REPL (when IPython is installed):
+
+   python3 bootstrap.py --shell ipython
+
+Project structure (high-level)
+------------------------------
+- bootstrap.py              — root REPL bootstrap (combines MGScripts + Documents)
+- ipython_startup.py        — helper to auto-load the REPL namespace into IPython
+- requirements.md           — top-level requirements file (points to Documents/requirements.md)
+- MGScripts/                — parent-repo helper scripts namespace and loader
+  - bootstrap.py            — load_env(), add_script(), pinspect(), reload_all()
+- Documents/                — submodule containing notes and SurzsEnviro toolkit
+  - SurzsEnviro/            — the scripts-first Python toolkit
+    - catchingpackets.py    — live packet capture / pcap analysis CLI
+    - computerspeak.py      — shell wrapper and logging helpers
+    - httpme.py             — HTTP utilities
+    - metasploiting.py      — Metasploit RPC helpers
+    - netrunning.py         — network scanning & helpers
+    - packetcraft.py        — crafted packet generation helpers
+    - shellwalking.py       — shell-history collection utilities
+    - target_config.py      — runtime configuration & guardrails
+    - whatprocess.py        — process/service helpers
+    - SurzalsNotes/         — local notes/log output directory
+  - Exploit_Notes/          — markdown knowledge base (notes, exploits, walkthroughs)
+
+Usage highlights
+----------------
+- The code is "REPL-first": many helpers are intended to be imported into an interactive session and used directly.
+- The bootstrap exposes helper shortcuts such as `speak()`, `reload_all()`, and `add_script()` into the REPL namespace.
+- Notes live under `Documents/Exploit_Notes/` and are accessible through the REPL via `NOTES_ROOT`.
+
+Useful smoke checks
+-------------------
+(from the repo root)
+
+- Verify the packet-capture CLI helps output:
+
+  python3 Documents/SurzsEnviro/catchingpackets.py --help
+
+- Quick runtime namespace check:
+
+  python3 - <<'PY'
+from MGScripts.bootstrap import load_env
+ns = load_env()
+print('speak' in ns, 'reload_all' in ns, 'add_script' in ns)
+PY
+
+- Start the interactive console and experiment with helpers:
+
+  python3 bootstrap.py
+
+Development & conventions
+-------------------------
+- This repository is not packaged as a typical Python package; modules are intentionally "scripts-first" and the bootstrap loader manipulates sys.path to expose bare imports inside SurzsEnviro.
+- Preserve the repo's import styles: package-qualified imports from the repo root and bare imports inside SurzsEnviro modules.
+- Many modules mix return values with side-effect logging. Before refactoring, confirm callers do not rely on console/log side effects.
+- There is no committed test suite or CI configuration. The repository includes `black`, `ruff`, and `pyright` in dependencies but no checked-in configs or commands to wire them together.
+- See `Documents/.github/copilot-instructions.md` for additional developer guidance and recommended smoke checks.
+
+Contributing
+------------
+If you'd like this README changed, or want a different indexing style (JSON index, generated module docs, or a full CODEBASE index), tell me which format you prefer and I can regenerate or add an index file.
+
+License
+-------
+No LICENSE file is committed in this repository. Check with the repository owner before reusing code or notes.
+
+Acknowledgements
+-----------------
+Generated and indexed automatically from repository structure and in-repo documentation. Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
