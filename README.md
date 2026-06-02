@@ -84,6 +84,31 @@ PY
 
   python3 bootstrap.py
 
+Tests
+-----
+A minimal pytest-based smoke test is present at tests/test_smoke.py (it asserts several repo smoke-check helpers return success).
+
+Running tests locally (recommended)
+-----------------------------------
+1. Create and activate a Python virtual environment, then install dependencies:
+   python3 -m venv .venv
+   source .venv/bin/activate
+   python3 -m pip install -r requirements.md
+
+2. Install pytest if not already installed:
+   python3 -m pip install pytest
+
+3. Run the smoke tests:
+   pytest -q tests/test_smoke.py
+
+To run all tests (if additional tests are added):
+   pytest -q
+
+Notes
+-----
+- The smoke tests call helper functions from smoke_check; ensure the repository root is the current working directory so imports from MGScripts and Documents resolve correctly.
+- If requirements.md refers to external or system packages, install those as needed before running tests.
+
 Development & conventions
 -------------------------
 - This repository is not packaged as a typical Python package; modules are intentionally "scripts-first" and the bootstrap loader manipulates sys.path to expose bare imports inside SurzsEnviro.
