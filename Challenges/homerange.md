@@ -1389,19 +1389,23 @@ This page contains information on 12 different vulnerable machines. Each one is 
 
 # 10.10.10.3 - Debian - "Morpheus:1"
 
-    Nmap scan report for 10.10.10.3
-    Host is up (0.0047s latency).
-    Not shown: 997 closed tcp ports (reset)
-    PORT   STATE SERVICE    VERSION
-    22/tcp open  tcpwrapped
-    | ssh-hostkey: 
-    |_  256 aa:83:c3:51:78:61:70:e5:b7:46:9f:07:c4:ba:31:e4 (ECDSA)
-    80/tcp open  tcpwrapped
-    |_http-server-header: Apache/2.4.51 (Debian)
-    |_http-title: Morpheus:1
-    81/tcp open  tcpwrapped
-    Aggressive OS guesses: Aastra 57i VoIP phone (96%), Avaya P130 workgroup switch (96%), FreeBSD 4.7-STABLE (96%), Slingmedia Slingbox AV TV over IP gateway (95%), IBM AIX 5.3 (94%), Scientific Atlanta WebSTAR EPC2203 cable modem (93%), Ricoh Aficio MP C4501 printer (92%), Schweitzer Engineering SEL-2701 Ethernet processor (92%), Sony Ericsson P1i mobile phone (Symbian OS 9.1) (91%), Apple iPod touch audio player (iPhone OS 2.2) (91%)
-    No exact OS matches for host (test conditions non-ideal).
+	Nmap scan report for 10.10.10.3
+	Host is up (0.00088s latency).
+	Not shown: 997 closed tcp ports (reset)
+	PORT   STATE SERVICE
+	22/tcp open  ssh
+	80/tcp open  http
+	|_http-dombased-xss: Couldn't find any DOM based XSS.
+	|_http-csrf: Couldn't find any CSRF vulnerabilities.
+	|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+	| http-enum: 
+	|_  /robots.txt: Robots file = "There's no white rabbit here.  Keep searching!"
+	81/tcp open  hosts2-ns
+        gives admin login on connection to http://10.10.10.3:81
+        this website uses nginx 1.18.0
+        
+# Nmap done at Thu Jun  4 00:40:19 2026 -- 1 IP address (1 host up) scanned in 29.45 seconds
+
 
 # 10.10.10.4 - Apache Https server - "Mr. Robot"
 
