@@ -9,7 +9,7 @@ This page contains information on 12 different vulnerable machines. Each one is 
 Debian 10, Apache 2.4.38, SSH wrapped only
     • Out‑of‑band HTTP; <br>• SSH unauth
     • Directory traversal, weak file perms on /var/www <br>• CVE‑2023‑25114 (Apache Undersized Write)
-    • Disable or harden HTTP: strip default pages <br>• Use sshd_config AllowUsers or SUDO to restrict access
+    • Disable or harden HTTP: strip default pages <br>• Use sshd_config AllowUsers or SUDO to restrict accesshonest
 
 192.168.56.102 "Pwn the Tron"
 
