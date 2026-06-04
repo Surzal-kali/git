@@ -1432,28 +1432,21 @@ This page contains information on 12 different vulnerable machines. Each one is 
 # 10.10.10.6 Fedora Web Server - "Earth"
 
     Nmap scan report for 10.10.10.6
-    Host is up (0.0080s latency).
-    Not shown: 957 closed tcp ports (reset), 40 filtered tcp ports (no-response)
+    Host is up (0.00074s latency).
+    Not shown: 657 filtered tcp ports (no-response), 340 closed tcp ports (reset)
     Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
-    PORT    STATE SERVICE        VERSION
-    22/tcp  open  tcpwrapped
-    | ssh-hostkey: 
-    |   256 5b:2c:3f:dc:8b:76:e9:21:7b:d0:56:24:df:be:e9:a8 (ECDSA)
-    |_  256 b0:3c:72:3b:72:21:26:ce:3a:84:e8:41:ec:c8:f8:41 (ED25519)
-    80/tcp  open  tcpwrapped
-    |_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9
-    |_http-title: Bad Request (400)
-    443/tcp open  ssl/tcpwrapped
-    | tls-alpn: 
-    |_  http/1.1
-    |_http-server-header: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9
-    | http-methods: 
-    |_  Potentially risky methods: TRACE
-    |_http-title: Test Page for the HTTP Server on Fedora
-    |_ssl-date: TLS randomness does not represent time
-    | ssl-cert: Subject: commonName=earth.local/stateOrProvinceName=Space
-    | Subject Alternative Name: DNS:earth.local, DNS:terratest.earth.local
-    | Not valid before: 2021-10-12T23:26:31
-    |_Not valid after:  2031-10-10T23:26:31
-    Aggressive OS guesses: Aastra 57i VoIP phone (96%), Avaya P130 workgroup switch (96%), FreeBSD 4.7-STABLE (96%), Slingmedia Slingbox AV TV over IP gateway (95%), IBM AIX 5.3 (94%), Scientific Atlanta WebSTAR EPC2203 cable modem (93%), Ricoh Aficio MP C4501 printer (92%), Schweitzer Engineering SEL-2701 Ethernet processor (92%), Sony Ericsson P1i mobile phone (Symbian OS 9.1) (91%), Apple iPod touch audio player (iPhone OS 2.2) (91%)
-    No exact OS matches for host (test conditions non-ideal).
+    PORT    STATE SERVICE
+    22/tcp  open  ssh
+    80/tcp  open  http
+    |_http-trace: TRACE is enabled
+    |_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+    |_http-aspnet-debug: ERROR: Script execution failed (use -d to debug)
+    |_http-vuln-cve2014-3704: ERROR: Script execution failed (use -d to debug)
+    |_http-dombased-xss: Couldn't find any DOM based XSS.
+    |_http-csrf: Couldn't find any CSRF vulnerabilities.
+    443/tcp open  https
+    |_http-csrf: Couldn't find any CSRF vulnerabilities.
+    |_http-dombased-xss: Couldn't find any DOM based XSS.
+    |_http-vuln-cve2014-3704: ERROR: Script execution failed (use -d to debug)
+    |_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+    |_http-aspnet-debug: ERROR: Script execution failed (use -d to debug)
