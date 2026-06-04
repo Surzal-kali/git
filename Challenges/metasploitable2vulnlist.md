@@ -122,3 +122,36 @@ Modules:
 
 auxiliary/scanner/rservices/rsh_login
 
+
+
+# Web Apps
+
+## TWiki
+
+- Full wiki engine
+- Runs on Apache
+- Uses CGI scripts
+
+- exploit/unix/webapp/twiki_history
+
+## phpMyAdmin
+
+- Web-based MySQL admin tool
+
+- Lets you import/export data
+
+- Lets you run SQL queries
+
+Lets you manually execute SQLi payloads by writing files to the webroot via SELECT ... INTO OUTFILE
+
+## WebDAV
+
+- Extension to HTTP for file management
+
+- Protocol is layered on top of Apache
+
+- Supports PUT, MOVE, DELETE, COPY, MKCOL
+
+- upload rev.ph -> execute -> shell
+
+- auxiliary/scanner/http/webdav_scanner
