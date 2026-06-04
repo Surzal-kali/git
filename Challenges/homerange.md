@@ -676,6 +676,12 @@ This page contains information on 12 different vulnerable machines. Each one is 
 
 # 192.168.56.104 - Ubuntu - "Zico's Shop"
 
+## Subject to Path traversal at 
+
+[http://192.168.56.104/view.php?page=](https://)
+
+## Scan
+
     Nmap scan report for 192.168.56.104
     Host is up (0.0032s latency).
     Not shown: 861 filtered tcp ports (no-response), 136 closed tcp ports (reset)
