@@ -1,4 +1,4 @@
-# **Exploit Chains Shared by Metasploitable Challenge VMs**
+# **Exploit Chain for Production Server**
 
 ## SSH - OpenSSH 4.7p1 (CVE-2010-4478)
 
