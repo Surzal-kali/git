@@ -1410,22 +1410,23 @@ This page contains information on 12 different vulnerable machines. Each one is 
 # 10.10.10.4 - Apache Https server - "Mr. Robot"
 
     Nmap scan report for 10.10.10.4
-    Host is up (0.0033s latency).
-    Not shown: 702 closed tcp ports (reset), 296 filtered tcp ports (no-response)
+    Host is up (0.00061s latency).
+    Not shown: 671 filtered tcp ports (no-response), 327 closed tcp ports (reset)
     Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
-    PORT    STATE SERVICE        VERSION
-    80/tcp  open  tcpwrapped
-    |_http-title: Site doesn't have a title (text/html).
-    |_http-server-header: Apache
-    443/tcp open  ssl/tcpwrapped
-    |_ssl-date: TLS randomness does not represent time
-    |_http-title: Site doesn't have a title (text/html).
-    | ssl-cert: Subject: commonName=www.example.com
-    | Not valid before: 2015-09-16T10:45:03
-    |_Not valid after:  2025-09-13T10:45:03
-    |_http-server-header: Apache
-    Aggressive OS guesses: Avaya P130 workgroup switch (92%), FreeBSD 4.7-STABLE (92%), Slingmedia Slingbox AV TV over IP gateway (91%), Aastra 57i VoIP phone (90%), IBM AIX 5.3 (89%), Scientific Atlanta WebSTAR EPC2203 cable modem (88%), Ricoh Aficio MP C4501 printer (88%), Schweitzer Engineering SEL-2701 Ethernet processor (87%), Sony Ericsson P1i mobile phone (Symbian OS 9.1) (87%), D-Link DI-504 or DI-704P broadband router, or DI-524 WAP (86%)
-    No exact OS matches for host (test conditions non-ideal).
+    PORT    STATE SERVICE
+    80/tcp  open  http
+    |_http-aspnet-debug: ERROR: Script execution failed (use -d to debug)
+    |_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+    |_http-csrf: Couldn't find any CSRF vulnerabilities.
+    |_http-vuln-cve2014-3704: ERROR: Script execution failed (use -d to debug)
+    |_http-dombased-xss: Couldn't find any DOM based XSS.
+    443/tcp open  https
+    |_http-vuln-cve2014-3704: ERROR: Script execution failed (use -d to debug)
+    |_http-csrf: Couldn't find any CSRF vulnerabilities.
+    |_http-dombased-xss: Couldn't find any DOM based XSS.
+    |_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+    |_http-aspnet-debug: ERROR: Script execution failed (use -d to debug)
+    
 
 2
 # 10.10.10.6 Fedora Web Server - "Earth"
