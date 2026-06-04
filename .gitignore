@@ -7,3 +7,5 @@ __pycache__/
 *.json
 *.db
 *.sqlite
+!burpuserst.json
+!burpprojectst.json
