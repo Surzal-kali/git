@@ -23,12 +23,12 @@ flowchart TD
   A -->|Tailscale| E
   A -->|Tailscale| C
   B -->|Tailscale| E
-  E -->|NIC0| C
+  E -->|vmbr1| C
   C -->|vmbr0| D
   D -->|vmbr1| C
   E -->|VPN Tunnel| F
   F --> G
-  E -->|Port Forward / SOCKS| A
+  E -->|Tailscale| A
 
   style A fill:#e1f5ff,stroke:#333,stroke-width:1px
   style B fill:#fff3e0,stroke:#333,stroke-width:1px
