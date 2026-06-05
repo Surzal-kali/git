@@ -24,7 +24,7 @@ flowchart TD
   A -->|Tailscale| C
   B -->|Tailscale| E
   E -->|vmbr1| C
-  C -->|vmbr0| D
+  C -->|vmbr1| D
   D -->|vmbr1| C
   E -->|VPN Tunnel| F
   F --> G
