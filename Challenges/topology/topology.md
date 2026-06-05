@@ -12,7 +12,7 @@ flowchart TD
   end
 
   subgraph "Offensive Tools"
-    E["Kali VM"]
+    E["Kali VM<br/>(Proxmox)"]
     F["HTB / OffSec VPN"]
   end
 
@@ -23,9 +23,9 @@ flowchart TD
   A -->|Tailscale| E
   A -->|Tailscale| C
   B -->|Tailscale| E
-  E -->|vmbr1| C
-  C -->|vmbr1| D
-  D -->|vmbr1| C
+  E -->|vmbr| C
+  C -->|vmbr| D
+  D -->|vmbr| C
   E -->|VPN Tunnel| F
   F --> G
   E -->|Tailscale| A
