@@ -12,4 +12,4 @@ shell = get_ipython()
 if shell is None:
     raise RuntimeError("ipython_startup.py must be loaded by IPython.")
 
-shell.push(build_namespace())
+shell.push(build_namespace
