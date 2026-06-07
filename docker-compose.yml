@@ -1,7 +1,6 @@
 services:
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
-    container_name: open-webui
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -25,7 +24,6 @@ services:
 
   open-terminal:
     image: ghcr.io/open-webui/open-terminal:latest
-    container_name: open-terminal
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -52,7 +50,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.jupyter
-    container_name: jupyter
     restart: unless-stopped
     ports:
       - "8888:8888"
