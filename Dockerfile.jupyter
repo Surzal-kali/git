@@ -1,0 +1,13 @@
+FROM jupyter/base-notebook:latest
+
+USER root
+WORKDIR /tmp/build
+
+COPY requirements.md ./requirements.md
+COPY Documents/requirements.md ./Documents/requirements.md
+
+RUN python -m pip install --no-cache-dir -r requirements.md sympy \
+    && rm -rf /tmp/build
+
+USER ${NB_UID}
+WORKDIR /home/jovyan/workspace

@@ -1,0 +1,91 @@
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      SCARF_NO_ANALYTICS: "true"
+      DO_NOT_TRACK: "true"
+      ANONYMIZED_TELEMETRY: "false"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - openwebui-data:/app/backend/data
+    networks:
+      - desktop-stack
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  open-terminal:
+    image: ghcr.io/open-webui/open-terminal:latest
+    container_name: open-terminal
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      OPEN_TERMINAL_API_KEY: ${OPEN_TERMINAL_API_KEY:-change-me}
+      CORS_ALLOWED_ORIGINS: http://localhost:8080,http://open-webui:8080
+    volumes:
+      - terminal-data:/home/user/.config
+      - .:/home/user/workspace
+    working_dir: /home/user/workspace
+    depends_on:
+      open-webui:
+        condition: service_healthy
+    networks:
+      - desktop-stack
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile.jupyter
+    container_name: jupyter
+    restart: unless-stopped
+    ports:
+      - "8888:8888"
+    environment:
+      JUPYTER_TOKEN: ${JUPYTER_TOKEN:-change-me}
+      JUPYTER_ENABLE_LAB: "no"
+    volumes:
+      - .:/home/jovyan/workspace
+      - jupyter-data:/home/jovyan/.local/share/jupyter
+    working_dir: /home/jovyan/workspace
+    command:
+      - start-notebook.sh
+      - --NotebookApp.token=${JUPYTER_TOKEN:-change-me}
+      - --NotebookApp.password=
+      - --NotebookApp.allow_origin=*
+      - --NotebookApp.ip=0.0.0.0
+      - --NotebookApp.port=8888
+      - --NotebookApp.default_url=/tree
+      - --NotebookApp.notebook_dir=/home/jovyan/workspace
+    networks:
+      - desktop-stack
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/tree"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  jupyter-data:
+  openwebui-data:
+  terminal-data:
+
+networks:
+  desktop-stack:
+    driver: bridge
