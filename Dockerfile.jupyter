@@ -7,6 +7,9 @@ COPY requirements.md ./requirements.md
 COPY Documents/requirements.md ./Documents/requirements.md
 
 RUN python -m pip install --no-cache-dir -r requirements.md sympy \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/build
 
 USER ${NB_UID}

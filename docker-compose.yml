@@ -1,6 +1,8 @@
 services:
   open-webui:
-    image: ghcr.io/open-webui/open-webui:main
+    build:
+      context: .
+      dockerfile: Dockerfile.open-webui
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -9,21 +11,28 @@ services:
       SCARF_NO_ANALYTICS: "true"
       DO_NOT_TRACK: "true"
       ANONYMIZED_TELEMETRY: "false"
+      CODE_EXECUTION_ENGINE: jupyter
+      CODE_EXECUTION_JUPYTER_URL: http://jupyter:8888
+      CODE_EXECUTION_JUPYTER_AUTH: token
+      CODE_EXECUTION_JUPYTER_AUTH_TOKEN: ${JUPYTER_TOKEN:-Surzal123}
+      CODE_INTERPRETER_ENGINE: jupyter
+      CODE_INTERPRETER_JUPYTER_URL: http://jupyter:8888
+      CODE_INTERPRETER_JUPYTER_AUTH: token
+      CODE_INTERPRETER_JUPYTER_AUTH_TOKEN: ${JUPYTER_TOKEN:-Surzal123}
+      TERMINAL_SERVER_CONNECTIONS: "[{\"id\":\"open-terminal\",\"name\":\"Open Terminal\",\"enabled\":true,\"url\":\"http://open-terminal:8000\",\"path\":\"/openapi.json\",\"auth_type\":\"bearer\",\"key\":\"${OPEN_TERMINAL_API_KEY:-change-me}\",\"server_type\":\"terminal\"}]"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
       - openwebui-data:/app/backend/data
+      - .\Documents\OpenWebUI\tools:/app/backend/data/tools:ro
+      - .\Documents\SurzsEnviro:/workspace/Documents/SurzsEnviro:ro
     networks:
       - desktop-stack
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 20s
 
   open-terminal:
-    image: ghcr.io/open-webui/open-terminal:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.open-terminal
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -34,9 +43,6 @@ services:
       - terminal-data:/home/user/.config
       - .:/home/user/workspace
     working_dir: /home/user/workspace
-    depends_on:
-      open-webui:
-        condition: service_healthy
     networks:
       - desktop-stack
     healthcheck:
@@ -54,7 +60,7 @@ services:
     ports:
       - "8888:8888"
     environment:
-      JUPYTER_TOKEN: ${JUPYTER_TOKEN:-change-me}
+      JUPYTER_TOKEN: ${JUPYTER_TOKEN:-Surzal123}
       JUPYTER_ENABLE_LAB: "no"
     volumes:
       - .:/home/jovyan/workspace
@@ -62,7 +68,7 @@ services:
     working_dir: /home/jovyan/workspace
     command:
       - start-notebook.sh
-      - --NotebookApp.token=${JUPYTER_TOKEN:-change-me}
+      - --NotebookApp.token=${JUPYTER_TOKEN:-Surzal123}
       - --NotebookApp.password=
       - --NotebookApp.allow_origin=*
       - --NotebookApp.ip=0.0.0.0

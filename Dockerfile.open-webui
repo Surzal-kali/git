@@ -1,0 +1,10 @@
+FROM ghcr.io/open-webui/open-webui:cuda
+
+USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends curl nmap tshark && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt /tmp/requirements.txt
+RUN python -m pip install --no-cache-dir -r /tmp/requirements.txt && rm /tmp/requirements.txt
+
+ENV SURZSENVIRO_ROOT=/workspace/Documents/SurzsEnviro
