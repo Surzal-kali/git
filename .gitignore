@@ -11,3 +11,5 @@ venv/
 *.sqlite
 !burpuserst.json
 !burpprojectst.json
+/_env
+nohup.out

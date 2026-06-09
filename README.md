@@ -29,6 +29,16 @@ Quickstart
 
    python3 bootstrap.py
 
+Docker compose helper
+---------------------
+To run Docker Compose with the repository's `_env` file automatically, use:
+
+   .\compose.ps1 up -d
+
+This wrapper applies:
+- --env-file _env
+- -f docker-compose.yml
+
    Documents-only REPL (lighter):
 
    python3 Documents/bootstrap.py
