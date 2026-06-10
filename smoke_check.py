@@ -29,7 +29,6 @@ def _load_module_from_path(path: Path, name: str | None = None) -> ModuleType:
     spec.loader.exec_module(module)  # type: ignore[arg-type]
     return module
 
-
 def run_check(name: str, fn):
     try:
         ok, msg = fn()
