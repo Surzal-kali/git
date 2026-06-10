@@ -1,16 +1,23 @@
 import subprocess
+import sys
+import os
 
 def launch_repl_framework():
-    # Step 1: Verify Working Directory
-    current_dir = subprocess.run("cd /config/workspace && pwd", shell=True, capture_output=True).stdout.decode('utf-8').strip()
+    # Verify working directory
+    workspace_dir = "/config/workspace"
+    if not os.path.isdir(workspace_dir):
+        raise FileNotFoundError(f"Workspace directory not found: {workspace_dir}")
     
-    if current_dir != "/config/workspace":
-        raise Exception(f"Current directory is {current_dir}, expected /config/workspace")
-    
-    # Step 2: Launch 'bootstrap.py' with Correct User Credentials
-    subprocess.run("su - user && cd /config/workspace && python3 bootstrap.py", shell=True, capture_output=True)
-    
-    print("REPL framework launched successfully.")
+    # Launch bootstrap.py directly with current Python executable
+    try:
+        subprocess.run([sys.executable, os.path.join(workspace_dir, "bootstrap.py")], check=True)
+        print("REPL framework launched successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error launching REPL: {e}", file=sys.stderr)
+        raise
+    except FileNotFoundError:
+        print(f"Python executable or bootstrap.py not found", file=sys.stderr)
+        raise
 
 if __name__ == "__main__":
     launch_repl_framework()
