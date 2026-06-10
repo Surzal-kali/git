@@ -13,3 +13,4 @@ venv/
 !burpprojectst.json
 /_env
 nohup.out
+*.php
