@@ -12,6 +12,7 @@ services:
     volumes:
       - tailscale-state:/var/lib/tailscale
       - /dev/net/tun:/dev/net/tun
+      - ./serve.json:/config/serve.json:ro
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
@@ -33,7 +34,7 @@ services:
       SCARF_NO_ANALYTICS: "true"
       DO_NOT_TRACK: "true"
       ANONYMIZED_TELEMETRY: "false"
-      CODE_SERVER_PUBLIC_URL: ${CODE_SERVER_PUBLIC_URL:-http://localhost:8443}
+      CODE_SERVER_PUBLIC_URL: ${CODE_SERVER_PUBLIC_URL:-/code-server}
       TERMINAL_SERVER_CONNECTIONS: "[{\"id\":\"open-terminal\",\"name\":\"Open Terminal\",\"enabled\":true,\"url\":\"http://open-terminal:8000\",\"path\":\"/openapi.json\",\"auth_type\":\"bearer\",\"key\":\"${OPEN_TERMINAL_API_KEY:-change-me}\",\"server_type\":\"terminal\"}]"
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -41,7 +42,6 @@ services:
       - openwebui-data:/app/backend/data
       - .\Documents\OpenWebUI\tools:/app/backend/data/tools:ro
       - .\Documents\SurzsEnviro:/workspace/Documents/SurzsEnviro:ro
-      - ./tailscale-serve.json:/config/serve.json:ro
     networks:
       - desktop-stack
     depends_on:
