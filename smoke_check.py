@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 """Lightweight smoke-check for MainGit
 
 Performs safe import/runtime checks for core modules without requiring heavy external deps.
