@@ -49,7 +49,8 @@ services:
       - .\Documents\OpenWebUI\tools:/app/backend/data/tools:ro
       - .\Documents\SurzsEnviro:/workspace/Documents/SurzsEnviro:ro
       - ./tailscale-serve.json:/config/serve.json:ro
-    network_mode: "service:tailscale"
+    networks:
+      - desktop-stack
     depends_on:
       tailscale:
         condition: service_started
@@ -73,12 +74,13 @@ services:
       - "8000:8000"
     environment:
       OPEN_TERMINAL_API_KEY: ${OPEN_TERMINAL_API_KEY:-change-me}
-      CORS_ALLOWED_ORIGINS: http://localhost:8080,http://open-webui:8080
+      CORS_ALLOWED_ORIGINS: http://localhost:8080
     volumes:
       - terminal-data:/home/user/.config
       - .:/home/user/workspace
     working_dir: /home/user/workspace
-    network_mode: "service:tailscale"
+    networks:
+      - desktop-stack
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
       interval: 30s
@@ -109,7 +111,8 @@ services:
       - --NotebookApp.port=8888
       - --NotebookApp.default_url=/tree
       - --NotebookApp.notebook_dir=/home/jovyan/workspace
-    network_mode: "service:tailscale"
+    networks:
+      - desktop-stack
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8888/tree"]
       interval: 30s
@@ -123,4 +126,9 @@ volumes:
   terminal-data:
   tailscale-state:
 
-networks: {}
+networks:
+  desktop-stack:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.31.250.0/24
