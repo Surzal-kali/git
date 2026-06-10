@@ -33,14 +33,7 @@ services:
       SCARF_NO_ANALYTICS: "true"
       DO_NOT_TRACK: "true"
       ANONYMIZED_TELEMETRY: "false"
-      CODE_EXECUTION_ENGINE: jupyter
-      CODE_EXECUTION_JUPYTER_URL: http://jupyter:8888
-      CODE_EXECUTION_JUPYTER_AUTH: token
-      CODE_EXECUTION_JUPYTER_AUTH_TOKEN: ${JUPYTER_TOKEN:-Surzal123}
-      CODE_INTERPRETER_ENGINE: jupyter
-      CODE_INTERPRETER_JUPYTER_URL: http://jupyter:8888
-      CODE_INTERPRETER_JUPYTER_AUTH: token
-      CODE_INTERPRETER_JUPYTER_AUTH_TOKEN: ${JUPYTER_TOKEN:-Surzal123}
+      CODE_SERVER_PUBLIC_URL: ${CODE_SERVER_PUBLIC_URL:-http://localhost:8443}
       TERMINAL_SERVER_CONNECTIONS: "[{\"id\":\"open-terminal\",\"name\":\"Open Terminal\",\"enabled\":true,\"url\":\"http://open-terminal:8000\",\"path\":\"/openapi.json\",\"auth_type\":\"bearer\",\"key\":\"${OPEN_TERMINAL_API_KEY:-change-me}\",\"server_type\":\"terminal\"}]"
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -56,7 +49,7 @@ services:
         condition: service_started
       open-terminal:
         condition: service_healthy
-      jupyter:
+      code-server:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/auth/me"]
@@ -88,40 +81,33 @@ services:
       retries: 5
       start_period: 20s
 
-  jupyter:
-    build:
-      context: .
-      dockerfile: Dockerfile.jupyter
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
     restart: unless-stopped
     ports:
-      - "8888:8888"
+      - "8443:8443"
     environment:
-      JUPYTER_TOKEN: ${JUPYTER_TOKEN:-Surzal123}
-      JUPYTER_ENABLE_LAB: "no"
+      PUID: 1000
+      PGID: 1000
+      TZ: UTC
+      PASSWORD: ${CODE_SERVER_PASSWORD:-Surzal123}
+      SUDO_PASSWORD: ${CODE_SERVER_SUDO_PASSWORD:-Surzal123}
+      PROXY_DOMAIN: ${CODE_SERVER_PROXY_DOMAIN:-localhost}
+      DEFAULT_WORKSPACE: /config/workspace
     volumes:
-      - .:/home/jovyan/workspace
-      - jupyter-data:/home/jovyan/.local/share/jupyter
-    working_dir: /home/jovyan/workspace
-    command:
-      - start-notebook.sh
-      - --NotebookApp.token=${JUPYTER_TOKEN:-Surzal123}
-      - --NotebookApp.password=
-      - --NotebookApp.allow_origin=*
-      - --NotebookApp.ip=0.0.0.0
-      - --NotebookApp.port=8888
-      - --NotebookApp.default_url=/tree
-      - --NotebookApp.notebook_dir=/home/jovyan/workspace
+      - code-server-data:/config
+      - .:/config/workspace
     networks:
       - desktop-stack
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8888/tree"]
+      test: ["CMD", "curl", "-f", "http://localhost:8443"]
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 30s
 
 volumes:
-  jupyter-data:
+  code-server-data:
   openwebui-data:
   terminal-data:
   tailscale-state:
