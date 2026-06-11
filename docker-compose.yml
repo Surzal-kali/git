@@ -7,7 +7,7 @@ services:
       TS_STATE_DIR: /var/lib/tailscale
       TS_USERSPACE: "false"
       TS_EXTRA_ARGS: --accept-routes --advertise-routes=172.31.250.0/24
-      TS_SERVE_CONFIG: /config/serve.json
+      TS_SERVE_CONFIG: /config/serve.jsonx
       TS_AUTHKEY: ${TS_AUTHKEY}
     volumes:
       - tailscale-state:/var/lib/tailscale
@@ -94,8 +94,8 @@ services:
       PUID: 1000
       PGID: 1000
       TZ: UTC
-      PASSWORD: ${CODE_SERVER_PASSWORD:Surzal123}
-      SUDO_PASSWORD: ${CODE_SERVER_SUDO_PASSWORD:Surzal123}
+      PASSWORD: ${CODE_SERVER_PASSWORD:-Surzal123}
+      SUDO_PASSWORD: ${CODE_SERVER_SUDO_PASSWORD:-Surzal123}
       PROXY_DOMAIN: ${CODE_SERVER_PROXY_DOMAIN:-localhost}
       DEFAULT_WORKSPACE: /config/workspace
     volumes:

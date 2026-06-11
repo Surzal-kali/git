@@ -1,8 +1,13 @@
-FROM lscr.io/linuxserver/code-server:latest
+FROM docker.io/kalilinux/kali-rolling:latest
 
-# Install Python 3 with venv and required build tools
+
+# Install Python 3 with venv and required build tools does this add whatever we need to build python packages with native extensions? Yes, it includes build-essential and python3-dev which are necessary for building Python packages with native extensions. then we need to add the metapackages for kali...
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends python3 python3-venv python3-pip python3-dev build-essential \
+    && apt-get install -y nodejs kali-linux-headless --no-install-recommends python3 python3-venv python3-pip python3-dev build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+#install code server
+RUN curl -fsSL https://code-server.dev/install.sh | sh  && code-server --version\
     && rm -rf /var/lib/apt/lists/*
 
 # Create a virtual environment in a shared location
@@ -19,4 +24,6 @@ RUN echo 'source /home/abc/.venv/bin/activate' >> /home/abc/.bashrc
 # Symlink python binaries to /usr/local/bin for global access
 RUN ln -sf /home/abc/.venv/bin/python /usr/local/bin/python && \
     ln -sf /home/abc/.venv/bin/pip /usr/local/bin/pip && \
-    ln -sf /home/abc/.venv/bin/python3 /usr/local/bin/python3
+    ln -sf /home/abc/.venv/bin/python3 /usr/local/bin/python3 && \
+    ln -sf /home/abc/.venv/bin/pip3 /usr/local/bin/pip3 \
+    && rm -rf /var/lib/apt/lists/*
