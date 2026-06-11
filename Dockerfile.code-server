@@ -1,10 +1,22 @@
 FROM lscr.io/linuxserver/code-server:latest
 
-# Install Python 3 and required build tools
+# Install Python 3 with venv and required build tools
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends python3 python3-pip python3-dev \
+    && apt-get install -y --no-install-recommends python3 python3-venv python3-pip python3-dev build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install Python packages
+# Create a virtual environment in a shared location
+RUN python3 -m venv /home/abc/.venv
+
+# Copy requirements and install Python packages into the venv
 COPY requirements.txt /tmp/requirements.txt
-RUN python3 -m pip install --no-cache-dir -r /tmp/requirements.txt
+RUN /home/abc/.venv/bin/pip install --no-cache-dir --upgrade pip setuptools wheel \
+    && /home/abc/.venv/bin/pip install --no-cache-dir -r /tmp/requirements.txt
+
+# Add venv to PATH so code-server terminal finds python/pip
+RUN echo 'source /home/abc/.venv/bin/activate' >> /home/abc/.bashrc
+
+# Symlink python binaries to /usr/local/bin for global access
+RUN ln -sf /home/abc/.venv/bin/python /usr/local/bin/python && \
+    ln -sf /home/abc/.venv/bin/pip /usr/local/bin/pip && \
+    ln -sf /home/abc/.venv/bin/python3 /usr/local/bin/python3

@@ -7,7 +7,7 @@ COPY requirements.md ./requirements.md
 COPY Documents/requirements.md ./Documents/requirements.md
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl nmap tshark python3-pip \
+    && apt-get install -y --no-install-recommends python3-venv python3-pip curl nmap tshark \
     && python3 -m pip install --break-system-packages --no-cache-dir -r requirements.md sympy \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/build

@@ -15,7 +15,7 @@ for candidate in (REPO_ROOT, DOCUMENTS_ROOT):
 
 from MGScripts.bootstrap import load_env as load_mgscripts_env
 
-CHEATSHEET = """
+CHEATSHEET = """\
 ===========================
  MainGit Interactive Console
 ===========================
