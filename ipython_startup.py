@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from ipython_startup import get_ipython
 
 REPO_ROOT = Path(__file__).resolve().parent
 repo_root_str = str(REPO_ROOT)
@@ -12,4 +13,4 @@ shell = get_ipython()
 if shell is None:
     raise RuntimeError("ipython_startup.py must be loaded by IPython.")
 
-shell.push(build_namespace
+shell.push(build_namespace())

@@ -198,24 +198,9 @@ def build_namespace():
     namespace["CHEATSHEET"] = CHEATSHEET
     return namespace
 
-
-def launch_repl(namespace):
-    try:
-        from IPython import start_ipython
-    except ImportError:
-        readline.parse_and_bind("tab: complete")
-        readline.set_completer(module_aware_completer(namespace))
-        code.interact(local=namespace, banner=CHEATSHEET)
-        return
-
-    print(CHEATSHEET)
-    start_ipython(argv=[], user_ns=namespace, display_banner=False)
-
-
-def main():
-    launch_repl(build_namespace())
-
-
 if __name__ == "__main__":
-    main()
-
+    namespace = build_namespace()
+    readline.set_completer(module_aware_completer(namespace))
+    readline.parse_and_bind("tab: complete")
+    print(CHEATSHEET)
+    code.interact(local=namespace) #yeah we need to stop thinking "cli" and start thinking "interactive console"
