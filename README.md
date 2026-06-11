@@ -1,5 +1,9 @@
 # MainGit — SurzsEnviro toolkit & Exploit Notes
 
+PLEASE NOTE THIS READ ME IS FOR THE BASE LOGIC.
+
+all docker related inquiries I plead the fifth until I figure out how to word it.
+
 A REPL-first operator toolkit paired with a Markdown knowledge base for offensive-security workflows.
 
 This repository bundles two complementary parts:
