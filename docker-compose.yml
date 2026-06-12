@@ -7,88 +7,19 @@ services:
     ports:
       - "8080:8080"
     environment:
-      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_BASE_URL: https://surzalmessy.taild70ce.ts.net
       SCARF_NO_ANALYTICS: "true"
       DO_NOT_TRACK: "true"
       ANONYMIZED_TELEMETRY: "false"
-      CODE_SERVER_PUBLIC_URL: ${CODE_SERVER_PUBLIC_URL:-/code-server}
-      TERMINAL_SERVER_CONNECTIONS: "[{\"id\":\"open-terminal\",\"name\":\"Open Terminal\",\"enabled\":true,\"url\":\"http://open-terminal:8000\",\"path\":\"/openapi.json\",\"auth_type\":\"bearer\",\"key\":\"${OPEN_TERMINAL_API_KEY:-change-me}\",\"server_type\":\"terminal\"}]"
       RAG_EMBEDDING_ENGINE: ollama
       RAG_EMBEDDING_MODEL: nomic-embed-text
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     volumes:
       - openwebui-data:/app/backend/data
-      - /Documents/OpenWebUI/tools:/app/backend/data/tools:ro
-      - /Documents/SurzsEnviro:/workspace/Documents/SurzsEnviro:ro
-    networks:
-      - host-stack
-    depends_on:
-      open-terminal:
-        condition: service_healthy
-      code-server:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/auth/me"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-  open-terminal:
-    build:
-      context: .
-      dockerfile: Dockerfile.open-terminal
-    restart: unless-stopped
-    ports:
-      - "8000:8000"
-    environment:
-      OPEN_TERMINAL_API_KEY: ${OPEN_TERMINAL_API_KEY:-change-me}
-      CORS_ALLOWED_ORIGINS: http://localhost:8080
-    volumes:
-      - terminal-data:/home/user/.config
-      - .:/home/user/workspace
-    working_dir: /home/user/workspace
-    networks:
-      - host-stack
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 20s
-
-  code-server:
-    build:
-      context: .
-      dockerfile: Dockerfile.code-server
-    restart: unless-stopped
-    ports:
-      - "8443:8443"
-    environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: UTC
-      PASSWORD: ${CODE_SERVER_PASSWORD:-Surzal123}
-      SUDO_PASSWORD: ${CODE_SERVER_SUDO_PASSWORD:-Surzal123}
-      PROXY_DOMAIN: ${CODE_SERVER_PROXY_DOMAIN:-localhost}
-      DEFAULT_WORKSPACE: /config/workspace
-    volumes:
-      - code-server-data:/config
-      - .:/config/workspace
-    networks:
-      - host-stack
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8443"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
+      - ./Documents/OpenWebUI/tools:/app/backend/data/tools:ro
+      - ./SurzsEnviro:/workspace/Documents/SurzsEnviro:ro
 
 volumes:
-  code-server-data:
   openwebui-data:
-  terminal-data:
 
 networks:
   host-stack:
