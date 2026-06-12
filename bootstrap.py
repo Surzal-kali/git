@@ -5,6 +5,20 @@ import rlcompleter
 import sys
 from pathlib import Path
 
+
+#that sucked D: even proxmox died. and it still kinda does.
+
+# 1 windows gpu passthrough for ollama needed. 
+# 2. kali has to stay. its the main dev environment i simply CAN'T move it.
+# 3. i now know how to use proper LXC containers. i wonder if the docker logic follows?
+# 4. CLI needs to be abolished since we're working with agentic ai. it can't hang. it needs to be an interactive console that can be reloaded on the fly. but the first order of business is taking the code as is, connecting the api's back again, and then beginning iteration. 
+
+# my idea is to iterate with the ai in multiple interactive environments (open terminal, open webui, base ollama) and then have the ai write code that can be copy pasted between them. the ai will be able to inspect the environment and know which one it's in, and then write code accordingly.
+
+#exactly! and we can play with model weights in each environment to see how it affects the ai's behavior. for example, we can have a more "creative" model in the webui for brainstorming and a more "logical" model in the terminal for coding.
+
+# surzsenviro holds the basic logic. i just hope its enough for the model to gather the necessary context to write code that can be copy pasted between environments. if not, we can always iterate on the enviro and add more functionality as needed.
+
 REPO_ROOT = Path(__file__).resolve().parent
 DOCUMENTS_ROOT = REPO_ROOT / "Documents"
 
