@@ -35,11 +35,15 @@ Quickstart
 
 Docker compose helper
 ---------------------
-To run Docker Compose with the repository's `_env` file automatically, use:
+To run Docker Compose with the repository's `_env` file on Kali/Linux, use:
+
+   docker compose --env-file _env -f docker-compose.yml up -d
+
+On Windows/PowerShell, you can still use:
 
    .\compose.ps1 up -d
 
-This wrapper applies:
+These apply:
 - --env-file _env
 - -f docker-compose.yml
 

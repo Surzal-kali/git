@@ -24,8 +24,6 @@ services:
     networks:
       - host-stack
     depends_on:
-      tailscale:
-        condition: service_started
       open-terminal:
         condition: service_healthy
       code-server:
@@ -91,7 +89,6 @@ volumes:
   code-server-data:
   openwebui-data:
   terminal-data:
-  tailscale-state:
 
 networks:
   host-stack:
