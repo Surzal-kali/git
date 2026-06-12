@@ -7,7 +7,7 @@ services:
       TS_STATE_DIR: /var/lib/tailscale
       TS_USERSPACE: "false"
       TS_EXTRA_ARGS: --accept-routes --advertise-routes=172.31.250.0/24
-      TS_SERVE_CONFIG: /config/serve.jsonx
+      TS_SERVE_CONFIG: /config/serve.json
       TS_AUTHKEY: ${TS_AUTHKEY}
     volumes:
       - tailscale-state:/var/lib/tailscale
@@ -42,8 +42,8 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - openwebui-data:/app/backend/data
-      - .\Documents\OpenWebUI\tools:/app/backend/data/tools:ro
-      - .\Documents\SurzsEnviro:/workspace/Documents/SurzsEnviro:ro
+      - /Documents/OpenWebUI/tools:/app/backend/data/tools:ro
+      - /Documents/SurzsEnviro:/workspace/Documents/SurzsEnviro:ro
     networks:
       - desktop-stack
     depends_on:
