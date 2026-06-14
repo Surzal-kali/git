@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      OLLAMA_BASE_URL: https://surzalmessy.taild70ce.ts.net
+      OLLAMA_BASE_URL: https://surzalmessy-1.taild70ce.ts.net
       SCARF_NO_ANALYTICS: "true"
       DO_NOT_TRACK: "true"
       ANONYMIZED_TELEMETRY: "false"
