@@ -8,7 +8,7 @@ import subprocess
 import sys
 import os
 
-HASHES_FILE = "/home/surzal/git/cleanpivot/hashes.txt"
+HASHES_FILE = "/home/surzal/git/cleanpivot/hashest.txt"
 WORDLIST = "/home/surzal/git/cleanpivot/rockyou.txt"
 
 
