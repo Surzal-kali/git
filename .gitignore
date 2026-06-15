@@ -16,3 +16,4 @@ nohup.out
 *.php
 .env.local
 .env
+hydra.restore
