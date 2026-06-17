@@ -153,3 +153,16 @@ linuxmaster@mercury:~$ ls -la /etc/systemd/system/djangotest.service
 -rw-r--r-- 1 root root 193 Sep  1  2020 /etc/systemd/system/djangotest.service
 linuxmaster@mercury:~$ ls -la /etc/systemd/system/djangotest.service
 -rw-r--r-- 1 root root 193 Sep  1  2020 /etc/systemd/system/djangotest.service
+
+hol up
+
+linuxmaster@mercury:/etc/systemd/system$ ls -la /usr/bin/django_testserver
+-rwxr-xr-x 1 root root 85 Sep  1  2020 /usr/bin/django_testserver
+linuxmaster@mercury:/etc/systemd/system$ file /usr/bin/django_testserver
+/usr/bin/django_testserver: Bourne-Again shell script, ASCII text executable
+linuxmaster@mercury:/etc/systemd/system$ strings /usr/bin/django_testserver | grep -i "pass\|secret\|root\|sudo\|"
+#!/bin/bash
+/usr/bin/python3 /home/webmaster/mercury_proj/manage.py runserver 0:8080
+linuxmaster@mercury:/etc/systemd/system$ 
+
+This is interesting. The `djangotest.service` runs as webmaster, but it's owned by root and not writable. However, the `django_testserver` script it executes is also owned by root and not writable. If we can find a way to modify that script or replace it with a symlink to a malicious script, we could potentially escalate to root when the service is restarted.
