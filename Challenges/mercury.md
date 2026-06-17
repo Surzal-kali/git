@@ -133,3 +133,23 @@
 - [ ] Check for writable files in Django app directory
 - [ ] Look for root-influenced cron jobs
 - [ ] Explore other escalation vectors (capabilities, log injection, UDF)
+
+after some deeper introspection, we have quite a few options. We could cheat, and do Dirty Pipe with `pkexec` (SUID), but that feels cheap. The SGID crontab is interesting, but it requires root to use `-u`, so it's not a direct escalation. The MySQL socket auth is a potential avenue if we can find a user matching linuxmaster, but the error suggests there isn't one. The locked-down home directory and lack of writable paths in `/etc` limit our options for file-based escalation. OH! speaking of the crontab and linuxmaster. the mysql isn't owned by linuxmaster.
+
+linuxmaster@mercury:~$ cat /etc/systemd/system/djangotest.service
+[Unit]
+Description=Start django test server
+After=mysql.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/django_testserver
+User=webmaster
+Group=webmaster
+
+[Install]
+WantedBy=multi-user.target
+linuxmaster@mercury:~$ ls -la /etc/systemd/system/djangotest.service
+-rw-r--r-- 1 root root 193 Sep  1  2020 /etc/systemd/system/djangotest.service
+linuxmaster@mercury:~$ ls -la /etc/systemd/system/djangotest.service
+-rw-r--r-- 1 root root 193 Sep  1  2020 /etc/systemd/system/djangotest.service
