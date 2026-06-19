@@ -391,3 +391,105 @@ Host script results:
 |_smb-vuln-ms10-061: NT_STATUS_OBJECT_NAME_NOT_FOUND
 
 Nmap done: 1 IP address (1 host up) scanned in 155.35 seconds
+
+
+knock knock you know who it is? its eternalblue. so we have a confirmed vulnerability to exploit. LMAO
+
+use exploit/windows/smb/ms17_010_eternalblue in metasploit, set RHOSTS to 10.0.2.4 and run it. If successful, you should get a Meterpreter shell with SYSTEM privileges. From there, you can navigate the file system to find and display the contents of `Hoot.txt`, `Hashbrowns1.txt`, and `Hide.jpeg`.
+
+AND BINGO WAS HIS NAME-O. We have a shell. 
+
+Here's a summary of the key findings organized for a presentation:
+
+---
+
+## Engagement Overview
+- **Target:** Windows 7 Ultimate SP1 (NINJA-PC) at `10.0.2.4`
+- **Environment:** VirtualBox NAT network (`Quickstart`, `10.0.2.0/24`)
+- **Time to compromise:** ~4 hours
+
+---
+
+## Vulnerabilities Discovered
+
+| # | Service | Port | Vulnerability | Risk |
+|---|---------|------|---------------|------|
+| 1 | SMB | 445 | **MS17-010 (EternalBlue)** — CVE-2017-0144 | Critical |
+| 2 | FTP | 21 | Anonymous login enabled — exposed admin/regular logs | Medium |
+| 3 | SQL Server | 1433 | SQL Server 2005 RTM (unpatched) — default `sa` likely weak | High |
+| 4 | IIS 7.5 | 80 | TRACE method enabled — XST attack vector | Low |
+| 5 | SSL/TLS | 1433 | **POODLE** — CVE-2014-3566 on SQL connection | Medium |
+
+---
+
+## Critical Intel from FTP Recon
+Anonymous FTP revealed a `comms.rtf` file in `Regular logs/all logs/` containing:
+- C&C server communication log
+- Confirmation of prior compromise ("machine compromised")
+- Backend server activated with **default account**
+- Admin dinner menu (humorous detail)
+
+---
+
+## Exploitation Steps
+
+1. **Nmap scan** → identified all open ports & services
+2. **NSE vuln scan** → confirmed MS17-010 vulnerability
+3. **Metasploit** → `exploit/windows/smb/ms17_010_eternalblue`
+4. **Result:** Meterpreter shell with **SYSTEM privileges**
+
+---
+
+## Flags Uncovered
+
+| File | Location | Content |
+|------|----------|---------|
+| `Hoot.txt` | `C:\Users\Ninja\Desktop\` | `RootFlag{061713fa2ad376430ac11555d1895f97876dc58f}` |
+| `hashbrowns1.txt` | `C:\Users\Public\Documents\` | SHA-256 hash: `07ef879175424a11fbc65e95737df3df8822b8a6` |
+| `hide.jpeg` | `C:\Users\Public\Documents\` | Batman image |
+
+---
+
+## Security Recommendations
+
+1. **Patch MS17-010** immediately — EternalBlue is well-known and easily exploitable
+2. **Disable anonymous FTP** — exposed sensitive comms logs
+3. **Harden SQL Server** — change default `sa` password, apply service packs
+4. **Disable TRACE method** on IIS to prevent XST attacks
+5. **Enforce SMB signing** — currently disabled
+6. **Update SSL/TLS** — POODLE vulnerability on SQL connection
+7. **Implement network segmentation** — limit exposure of critical services
+8. **Deploy IDS/IPS** — detect exploitation attempts in real-time
+
+---
+
+## Suggested Slide Structure (12+ slides)
+
+1. **Title Slide**
+2. **Executive Summary**
+3. **Environment Setup** (NAT network, VMs)
+4. **Reconnaissance Methodology** (nmap scan strategy)
+5. **Vulnerabilities Found** (table above)
+6. **FTP Recon — Critical Intel** (comms.rtf excerpt)
+7. **Exploitation — EternalBlue** (steps + screenshot)
+8. **Post-Exploitation** (Meterpreter, SYSTEM access)
+9. **Flags Discovered** (contents of all 3 files)
+10. **Attack Timeline** (chronology)
+11. **Security Recommendations** (7 items above)
+12. **Conclusion & Lessons Learned**
+13. **Q&A / Appendix**
+
+
+hashbrowns1.txt and hide.jpeg was located in C:\Users\Public\Documents\ and Hoot.txt was located in C:\Users\Ninja\Desktop\:
+
+```txt
+    hASHbrowns1.txt= 07ef879175424a11fbc65e95737df3df8822b8a6 
+```
+
+(hide.jpeg is a picture of batman)
+
+```txt
+Hoot.txt = RootFlag{061713fa2ad376430ac11555d1895f97876dc58f}
+````
+
+3 flags in 4 hours :D and now we just have to document everything and make a presentation.
