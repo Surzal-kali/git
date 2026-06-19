@@ -3,7 +3,7 @@
 ## Nmap command
 
 ```bash
-    Nmap scan report for 192.168.56.102
+    Nmap scan report for 192.168.56.102 (see pwnthetron.md <coming soon> for more information on this host)
     Host is up (0.0037s latency).
     Not shown: 999 closed tcp ports (reset)
     PORT   STATE SERVICE    VERSION
@@ -21,6 +21,7 @@
 
     Nmap scan report for 192.168.56.103
     Host is up (0.0041s latency).
+    (see napping.md for more details on this host)
     Not shown: 997 closed tcp ports (reset), 1 filtered tcp port (no-response)
     Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
     PORT   STATE SERVICE    VERSION
@@ -54,6 +55,7 @@
 
     Nmap scan report for 192.168.56.112
     Host is up (0.0045s latency).
+    (see earth_secure_messaging.md for more information on this host)
     Not shown: 990 closed tcp ports (reset), 9 filtered tcp ports (no-response)
     Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
     PORT   STATE SERVICE    VERSION
@@ -70,7 +72,7 @@
     HOP RTT     ADDRESS
     1   4.51 ms 192.168.56.112
 
-    Nmap scan report for 192.168.56.114
+    Nmap scan report for 192.168.56.114 (taking a second pass to try to defeat RST rate limiting)
     Host is up (0.0042s latency).
     Not shown: 985 closed tcp ports (reset), 12 filtered tcp ports (no-response)
     Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
@@ -89,7 +91,7 @@
     TRACEROUTE
     HOP RTT     ADDRESS
     1   4.17 ms 192.168.56.114
-
+    (see qdpmvictim.md for more information on this host )
     Nmap scan report for 192.168.56.115
     Host is up (0.0044s latency).
     Not shown: 996 closed tcp ports (reset), 1 filtered tcp port (no-response)

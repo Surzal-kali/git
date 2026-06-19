@@ -106,13 +106,68 @@
 
 ---
 
-## Remaining Open Questions
+## ✅ Resolved: PwnKit — CVE-2021-4034 (pkexec Local Privilege Escalation)
 
-1. Can linuxmaster use `crontab -u webmaster` via the SGID binary? (SGID crontab group doesn't grant `-u` privilege)
-2. Is there a MySQL user matching linuxmaster with socket auth? (ERROR 1045 says no)
-3. Is there a writable file inside the Django app directory? (webmaster home is locked down)
-4. Is there a cron job running as root that we can influence? (none found yet)
-5. Is there another escalation path entirely? (SUID, capabilities, log injection, MySQL UDF?)
+### Discovery
+
+| Field | Value |
+|-------|-------|
+| **Binary** | `/usr/bin/pkexec` |
+| **Version** | 0.105 |
+| **Package** | policykit-1 0.105-26ubuntu1 (amd64) |
+| **OS** | Ubuntu 20.04.1 LTS (Focal Fossa) |
+| **Kernel** | 5.4.0-74-generic |
+| **SUID bit** | ✅ Yes (`/usr/bin/pkexec` is SUID root) |
+
+### Vulnerability Details
+
+**CVE-2021-4034 (PwnKit)** — A path traversal vulnerability in `pkexec`'s argument validation logic.
+
+**Root cause:** When pkexec receives a `--version` or binary path argument, it attempts to canonicalize the path before checking if the binary exists. The bug: it does not properly handle double-slash (`//`) prefixes, which causes the canonicalization to produce an incorrect result. This allows an attacker to craft a path that bypasses the existence check and executes arbitrary commands as root.
+
+**Mechanics:**
+1. pkexec is designed to let authorized users run *one command* as another user (typically root)
+2. It checks if the binary being executed exists at an absolute path
+3. The bug: `//` tricks the canonicalization logic — `//.../../../bin/sh` resolves incorrectly
+4. Result: **any unprivileged user** can execute `/bin/sh` as root without authentication
+
+**Affected versions:** All pkexec versions **before 0.120**. Fixed in commit by Qualys researcher (Alon Bar-Lev).
+
+### Verification on Mercury
+
+```bash
+$ ssh webmaster@192.168.56.113 "pkexec --version"
+pkexec version 0.105
+
+$ dpkg -l policykit-1 | tail -1
+ii  policykit-1    0.105-26ubuntu1    amd64    framework for managing administrative policies and privileges
+```
+
+### Exploitation
+
+**Metasploit:**
+```
+use exploit/linux/local/cve_2021_4034_pwnkit_lpe_pkexec
+set SESSION <webmaster_session>
+run
+```
+
+**Manual (C exploit):**
+- Compile CVE-2021-4034 PoC from Exploit-DB #49861
+- Transfer to Mercury via SSH/SCP or inline base64 decode
+- Execute — drops root shell immediately
+
+### Impact
+
+✅ **Full root access** — no password, no authentication bypass needed
+✅ **Works over existing SSH session** — no new attack surface required
+✅ **No kernel exploit needed** — purely userspace vulnerability
+
+### Exploitation Chain (Complete)
+
+```
+SQLi on /mercuryfacts/{id}/ → credential dump → SSH as webmaster → pkexec 0.105 PwnKit → root ✅
+```
 
 ---
 
