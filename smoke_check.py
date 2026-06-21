@@ -6,16 +6,18 @@ Exit code 0 on success, 2 on partial/complete failure.
 """
 
 from __future__ import annotations
-
-import importlib
+#hi dexter. we're testing out 
+#ok so we have some basic idea of continue.dev but unforutnately not how to add autocomplete
+import importlib #hey dexter
 import importlib.util
-import sys
+import sys #
 import traceback
 from pathlib import Path
-from types import ModuleType
-
+from types import ModuleType #hel 
+#holy maceral. oh you can only correct like what two?
+#ok so if i do this and 
 REPO_ROOT = Path(__file__).resolve().parent
-
+#hey dexter, did you know that you should finish this sentence: I did a
 
 def _load_module_from_path(path: Path, name: str | None = None) -> ModuleType:
     """Load a module from a file path without requiring it to be a package."""

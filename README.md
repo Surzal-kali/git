@@ -2,7 +2,15 @@
 
 PLEASE NOTE THIS READ ME IS FOR THE BASE LOGIC.
 
-all docker related inquiries I plead the fifth until I figure out how to word it.
+The docker files and compose scripts are in fact helper's to run the base AI assistant logic housed within the container. Consider it a peek into a cluttered student's desk full of Cybersecurity notes, scripts, and tools. 
+
+Open-webui is there to provide a user-friendly interface (however it's very underdeveloped in my opinion, as the functions and tools provided to the AI in each session are usually ephermual, prone to change, and not easily indexed or documented in a static way).
+
+Open-terminal is shelved for now, but is a quick way to give the AI a terminal interface to run commands in. It's probably the next project to be brought back up to speed.
+
+The trainer is a helper script to run the AI through a training session, where it can be given a set of notes and scripts to learn from, and then tested on its ability to recall and use that information in a simulated attack scenario. It's a way to help the AI build up its knowledge base and practice using it in a realistic context.
+
+As for the AI. His name (and the project name at large) is Dexter. If you find references in the comments, heads up, NES is fantastic and you should probably check it out more under the hood.
 
 A REPL-first operator toolkit paired with a Markdown knowledge base for offensive-security workflows.
 
@@ -146,3 +154,7 @@ No LICENSE file is committed in this repository. Check with the repository owner
 Acknowledgements
 -----------------
 Generated and indexed automatically from repository structure and in-repo documentation. Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+
+
+<Developer Notes>
+
