@@ -1,0 +1,88 @@
+import os
+import shlex
+import subprocess
+from computerspeak import ComputerSpeak as cs
+#THE PROPER WAY TO MSF GODDANGET. Never got it to work well tho. 
+try: 
+    from pymetasploit3.msfrpc import MsfRpcClient
+except ImportError as exc:
+    MsfRpcClient = None
+    _MSF_IMPORT_ERROR = exc
+else:
+    _MSF_IMPORT_ERROR = None
+
+csi = cs()
+client = None
+MSF_PASS = os.getenv("MSF_PASS", "")
+MSF_RPC_PORT = int(os.getenv("MSF_RPC_PORT", "55552"))
+MSF_RPC_SSL = os.getenv("MSF_RPC_SSL", "false").strip().lower() == "true"
+
+def _log_action(message):
+    """Log an action message using the ComputerSpeak class. This function takes a message as input and uses the ComputerSpeak instance to execute a command that echoes the message. The message is safely quoted using shlex.quote to prevent any issues with special characters or command injection vulnerabilities. This logging mechanism provides a way to track the actions being performed in the Metasploit helper functions."""
+    csi.ec(f"echo {shlex.quote(message)}")
+
+#TODO: More Functionality such as:
+#[ ] Database interaction (e.g. adding hosts, services, etc.) need to have this read our recon folder and add hosts and services based on our findings. that would be pretty neat! for now its dead weight however its a nice placeholder for the idea of having a function that can interact with the msf database and add our recon findings to it.
+#[ ] Job management (e.g. listing, stopping jobs) - This one I don't actually know the background tasks Metasploit can do, because normally i'm interacting manually or with this. 
+
+#SO it begs the question, is this really needed? 
+
+def _get_client():
+    global client
+    if MsfRpcClient is None:
+        raise RuntimeError(
+            "pymetasploit3 is not installed. Install dependencies from requirements.md before using Metasploit helpers."
+        ) from _MSF_IMPORT_ERROR
+    if client is None:
+        client = MsfRpcClient(password=MSF_PASS, port=MSF_RPC_PORT, ssl=MSF_RPC_SSL)
+    return client
+
+
+def _apply_options(module, options):
+    """Apply the given options to the specified Metasploit module. This function iterates over the provided options dictionary and sets each option on the module. If no options are provided, the function simply returns without making any changes."""
+    if not options:
+        return
+    for option, value in options.items():
+        module[option] = value
+
+
+
+def search_modules(query):
+    """ Search for Metasploit modules based on a query string. This function uses the Metasploit client to search for modules that match the provided query. The search results are returned as a list of matching modules, which can be further processed or displayed as needed. The function also logs the search action using the ComputerSpeak class to provide insights into the search process."""
+    _log_action(f"Searching for modules related to: {query}")
+    searchdata = _get_client().modules.search(query)
+    return searchdata
+
+
+def execute_module(module_type, module_name, options):
+    """Execute a specified Metasploit module with the given options. This function uses the Metasploit client to execute a module of the specified type and name, applying the provided options. The results of the module execution are returned, and the action is logged using the ComputerSpeak class to provide insights into the execution process."""
+    _log_action(f"Executing module: {module_type}/{module_name} with options: {options}")
+    module = _get_client().modules.use(module_type, module_name)
+    _apply_options(module, options)
+    result = module.execute()
+    return result
+
+
+def list_sessions():
+    """List all active Metasploit sessions. This function uses the Metasploit client to retrieve a list of active sessions. The sessions are returned in a structured format, and the action is logged using the ComputerSpeak class to provide insights into the session management process."""
+    _log_action("Listing active sessions")
+    sessions = _get_client().sessions.list
+    return sessions
+
+
+def get_db_status():
+    """Check the status of the Metasploit database. This function uses the Metasploit client to retrieve the current status of the database. The status is returned in a structured format, and the action is logged using the ComputerSpeak class to provide insights into the database management process."""
+    _log_action("Checking database status")
+    db_status = _get_client().db.status()
+    return db_status
+
+
+def payload_generation(payload_name, options):
+    """Generate a Metasploit payload with the specified name and options. This function uses the Metasploit client to create a payload based on the provided name and options. The generated payload is returned, and the action is logged using the ComputerSpeak class to provide insights into the payload generation process."""
+    _log_action(f"Generating payload: {payload_name} with options: {options}")
+    payload = _get_client().modules.use("payload", payload_name)
+    _apply_options(payload, options)
+    generated_payload = payload.payload_generate()
+    return generated_payload
+
+#unfortunately, editing the assembly code through msfvenom or msfconsole seem to be guardrailed hard, so we'll rely on more traditional methods of payload delivery for now, but we can always revisit this in the future if we want to get more creative.

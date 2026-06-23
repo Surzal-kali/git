@@ -3,7 +3,7 @@
 import sys
 sys.path.insert(0, '/home/surzal/git/Documents/SurzsEnviro')
 
-from netrunning import NetRunning
+from SurzsEnviro.muesem.netrunning import NetRunning
 import os
 
 TARGET = "192.168.56.113"
