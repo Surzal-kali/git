@@ -1,4 +1,15 @@
-# Nmap 7.99 scan initiated Mon Jun 22 20:21:36 2026 as: /usr/lib/nmap/nmap --privileged --open -sC -sV -O -oN zicostuff.txt 192.168.1.102
+# Vulnhub Summary
+Level: Intermediate
+
+Goal: Get root and read the flag file
+
+Description:
+
+Zico is trying to build his website but is having some trouble in choosing what CMS to use. After some tries on a few popular ones, he decided to build his own. Was that a good idea?
+
+Hint: Enumerate, enumerate, and enumerate!
+
+## Nmap 7.99 scan initiated Mon Jun 22 20:21:36 2026 as: /usr/lib/nmap/nmap --privileged --open -sC -sV -O -oN zicostuff.txt 192.168.1.102
 
 Nmap scan report for 192.168.1.102
 Host is up (0.00074s latency).
@@ -65,4 +76,13 @@ Summary of Findings
      - Further Queries:
        - You mentioned querying OpenCVE for any known vulnerabilities related to path traversal attacks on Apache and
          PHP configurations. Once you have that information, we can proceed with next steps accordingly.
-alright so we have a few things we can do 
+alright so we have a few things we can do
+
+     6. Directory Listing - /img/:
+        - Confirmed directory listing enabled at http://192.168.1.102/img/
+        - Files visible: (to be documented after review)
+        - Potential for identifying image upload patterns, CMS structure, or sensitive files
+
+#### APACHE2/CONFIG
+
+ServerAdmin webmaster@localhost DocumentRoot /var/www Options FollowSymLinks AllowOverride None Options Indexes FollowSymLinks MultiViews AllowOverride None Order allow,deny allow from all ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/ AllowOverride None Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch Order allow,deny Allow from all ErrorLog ${APACHE_LOG_DIR}/error.log # Possible values include: debug, info, notice, warn, error, crit, # alert, emerg. LogLevel warn CustomLog ${APACHE_LOG_DIR}/access.log combined Alias /doc/ "/usr/share/doc/" Options Indexes MultiViews FollowSymLinks AllowOverride None Order deny,allow Deny from all Allow from 127.0.0.0/255.0.0.0 ::1/128 

@@ -3,16 +3,15 @@ FROM ghcr.io/open-webui/open-terminal:latest
 USER root
 WORKDIR /tmp/build
 
-COPY requirements.md ./requirements.md
-COPY Documents/requirements.md ./Documents/requirements.md
+COPY requirements.txt ./requirements.txt
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends python3-venv python3-pip curl nmap tshark \
-    && python3 -m pip install --break-system-packages --no-cache-dir -r requirements.md sympy \
+    && python3 -m pip install --break-system-packages --no-cache-dir -r requirements.txt sympy \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/build
 
-ENV SURZSENVIRO_ROOT=/home/user/workspace/Documents/SurzsEnviro
+ENV SURZSENVIRO_ROOT=/home/user/workspace/SurzsEnviro
 
 USER user
 WORKDIR /home/user/workspace

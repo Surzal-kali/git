@@ -7,23 +7,28 @@ services:
     ports:
       - "8080:8080"
     environment:
-      OLLAMA_BASE_URL: https://surzalmessy-1.taild70ce.ts.net
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL}
       SCARF_NO_ANALYTICS: "true"
       DO_NOT_TRACK: "true"
       ANONYMIZED_TELEMETRY: "false"
       RAG_EMBEDDING_ENGINE: ollama
       RAG_EMBEDDING_MODEL: nomic-embed-text
     volumes:
-      - openwebui-data:/app/backend/data
-      - ./Documents/OpenWebUI/tools:/app/backend/data/tools:ro
-      - ./SurzsEnviro:/workspace/Documents/SurzsEnviro:ro
-
-volumes:
-  openwebui-data:
-
-networks:
-  host-stack:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.31.250.0/24
+      - ./OpenWebUI/tools:/app/backend/data/tools:ro
+      - ./SurzsEnviro:/workspace/SurzsEnviro:rw
+      - ./dockerstuff:/workspace/dockerstuff
+  
+  open-terminal:
+    build:
+      context: .
+      dockerfile: Dockerfile.open-terminal
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      OPEN_TERMINAL_API_KEY: ${OPEN_TERMINAL_API_KEY}
+      OPEN_TERMINAL_PROXY_DOMAIN: ${OPEN_TERMINAL_PROXY_DOMAIN}
+      OPEN_TERMINAL_PUBLIC_URL: ${OPEN_TERMINAL_PUBLIC_URL}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+    volumes:
+      - ./SurzsEnviro:/workspace/SurzsEnviro:rw

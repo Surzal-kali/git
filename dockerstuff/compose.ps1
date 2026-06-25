@@ -6,10 +6,10 @@ param(
 $ErrorActionPreference = 'Stop'
 
 $composeFile = Join-Path $PSScriptRoot 'docker-compose.yml'
-$envFile = Join-Path $PSScriptRoot '_env'
+$envFile = Join-Path $PSScriptRoot '.env'
 
 if (-not (Test-Path -Path $envFile)) {
-    Write-Error "Missing _env file at $envFile"
+    Write-Error "Missing .env file at $envFile"
     exit 1
 }
 

@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt && rm /tmp/requirements.
 COPY trainer/ /workspace/trainer/
 
 ENV PYTHONPATH=/workspace
-ENV OLLAMA_BASE_URL=http://100.67.192.75:11434
+ENV OLLAMA_BASE_URL=http://192.1688.1.100:11434
 ENV CHECKPOINT_DIR=/workspace/checkpoints
 
 CMD ["uvicorn", "trainer.api:app", "--host", "0.0.0.0", "--port", "8090"]

@@ -7,4 +7,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl nmap tshar
 COPY requirements.txt /tmp/requirements.txt
 RUN python -m pip install --no-cache-dir -r /tmp/requirements.txt && rm /tmp/requirements.txt
 
-ENV SURZSENVIRO_ROOT=/workspace/Documents/SurzsEnviro
+ENV SURZSENVIRO_ROOT=/workspace/SurzsEnviro
