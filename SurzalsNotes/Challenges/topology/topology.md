@@ -27,7 +27,7 @@ flowchart TD
 
     %% ── Telemetry ────────────────────────────────
     subgraph "Telemetry"
-        H["Raspberry Pi 5<br/>(Tailscale + vmbr1)"]
+        H["Raspberry Pi 5<br/>(Tailscale Node)"]
     end
 
     %% ── Connections ──────────────────────────────
