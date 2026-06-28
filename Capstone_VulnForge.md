@@ -10,7 +10,7 @@ Unlike traditional CTFs with static challenges, VulnForge generates a **new, unk
 
 ## Core Concept
 
-The platform generates a random vulnerable environment using **Vulhub** templates, spins it up via **Docker Compose**, and challenges the user to compromise it. A local LLM (e.g., Ollama, LM Studio) acts as an adaptive hint system, aware of the vulnerability but only revealing information as needed.
+The platform generates a random vulnerable environment using **Docker** templates, spins it up via **Docker Compose**, and challenges the user to compromise it. A local LLM (e.g., Ollama, LM Studio) acts as an adaptive hint system, aware of the vulnerability but only revealing information as needed.
 
 ---
 
@@ -20,7 +20,7 @@ The platform generates a random vulnerable environment using **Vulhub** template
 
 |---------|-------------|
 
-| **Dynamic Environments** | Randomly selects a Vulhub template each session—no two runs are the same |
+| **Dynamic Environments** | Randomly selects a Docker template each session—no two runs are the same |
 
 | **Adaptive Hint System** | LLM provides hints based on user progress, from subtle clues to research topics |
 
@@ -96,7 +96,7 @@ The platform generates a random vulnerable environment using **Vulhub** template
 
 | **Ollama / LM Studio** | Local LLM inference |
 
-| **Vulhub** | Source of vulnerable templates |
+| **Docker** | Source of vulnerable templates |
 
 | **Markdown** | Report generation and documentation |
 
@@ -108,7 +108,7 @@ The platform generates a random vulnerable environment using **Vulhub** template
 
 |-------|-------|
 
-| **MVP (Week 1-2)** | Single hardcoded Vulhub template, basic launch script, manual hint system |
+| **MVP (Week 1-2)** | Single hardcoded Docker template, basic launch script, manual hint system |
 
 | **Core (Week 3-4)** | Random template selection, LLM integration, hint generation |
 
@@ -190,7 +190,7 @@ vulnforge/
 
 ├── templates/
 
-│ └── vulhub_list.json
+│ └── docker_list.json
 
 ├── logs/
 
