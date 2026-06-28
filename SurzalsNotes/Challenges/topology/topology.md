@@ -15,7 +15,7 @@ flowchart TD
 
     %% ── VMs on Proxmox ───────────────────────────
     subgraph "VMs (vmbr1)"
-        B["Windows AI Workstation VM<br/>(vmbr1)"]
+        B["Windows AI Workstation VM<br/>(vmbr1 + Tailscale)"]
         E["Kali Linux VM<br/>(vmbr1 + Tailscale)"]
     end
 
@@ -35,9 +35,8 @@ flowchart TD
     A -->|Tailscale| E
     A -->|Tailscale| H
 
-    B -->|vmbr1| C
-    E -->|vmbr1| C
-    H -->|vmbr1| C
+    B -->|vmbr1| D
+    E -->|vmbr1| D
 
     D -->|vmbr0| C
 
