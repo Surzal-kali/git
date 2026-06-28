@@ -134,4 +134,4 @@ Pasted_Text_1782533029465.txt
 . Automated injection testing via sqlmap caused a server DoS/crash with no data exfiltration; path closed due to instability and lack of alternative auth vectors.
 PHP Stream Wrappers (RCE): Attempts using php://filter/convert.base64-encode and data:text/plain payloads in /view.php?page= returned only raw plaintext or empty responses, indicating the backend uses a read-only function (e.g., file_get_contents() or readfile()) rather than an executable one (include()). Remote Code Execution via LFI wrappers is not possible.
 Git Repository Exposure: Traversal attempts to access .git/config and other repository artifacts returned no content, confirming that either the directory does not exist in the web root /var/www/html/ or permissions prevent reading it. No source code history available for secret hunting 
-
+Pasted_Text_1782533029465.txt

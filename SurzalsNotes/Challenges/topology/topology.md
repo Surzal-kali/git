@@ -3,7 +3,7 @@ flowchart TD
   %% Grouped nodes for clarity
   subgraph "User Devices"
     A["2021 Laptop<br/>(Tailscale Node)"]
-    B["Windows 11 Gaming VM<br/>(Proxmox)"]
+    B["Windows AI Workstation VM<br/>(Proxmox)"]
   end
 
   subgraph "Infrastructure"
@@ -19,6 +19,30 @@ flowchart TD
   subgraph "Targets"
     G["Target Boxes"]
   end
+
+  subgraph "Telemetry"
+    H["Raspberry Pi 5<br/>(Telemetry, YouTube Automation)"]
+  end
+
+  %% Connections
+  A -->|Tailscale| B
+  A -->|Tailscale| C
+  B -->|Tailscale| E
+  E -->|vmbr| C
+  C -->|vmbr| D
+  D -->|vmbr| C
+  E -->|VPN Tunnel| F
+  F --> G
+  E -->|Tailscale| A
+
+  style A fill:#e1f5ff,stroke:#333,stroke-width:1px
+  style B fill:#fff3e0,stroke:#333,stroke-width:1px
+  style C fill:#f3e5f5,stroke:#333,stroke-width:1px
+  style D fill:#e8f5e9,stroke:#333,stroke-width:1px
+  style E fill:#fce4ec,stroke:#333,stroke-width:1px
+  style F fill:#ede7f6,stroke:#333,stroke-width:1px
+  style G fill:#fff9c4,stroke:#333,stroke-width:1px
+  style H fill:#e0f7fa,stroke:#333,stroke-width:1px
 
   A -->|Tailscale| E
   A -->|Tailscale| C
