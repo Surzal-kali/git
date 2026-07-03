@@ -18,3 +18,22 @@ services:
       - ./SurzsEnviro:/workspace/SurzsEnviro:rw
       - ./dockerstuff:/workspace/dockerstuff
   
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile.jupyter
+    restart: unless-stopped
+    ports:
+      - "8888:8888"
+    environment:
+      JUPYTER_AI_OLLAMA_BASE_URL: ${OLLAMA_BASE_URL}
+      SCARF_NO_ANALYTICS: "true"
+      DO_NOT_TRACK: "true"
+      ANONYMIZED_TELEMETRY: "false"
+    volumes:
+      - /home/surzal/git:/home/jovyan/work/git
+      - ./dockerstuff:/home/jovyan/work/dockerstuff
+    command: >
+      bash -c "
+        jupyter lab
+      "

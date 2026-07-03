@@ -1,0 +1,25 @@
+# Pick a Jupyter base image
+FROM quay.io/jupyter/datascience-notebook:x86_64-latest
+
+USER root
+
+# System packages (keep what you have)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl nmap tshark && \
+    rm -rf /var/lib/apt/lists/*
+
+# Python AI extensions for Jupyter Lab
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt && \
+    # The big one: lets you chat with LLMs directly in notebooks
+pip install jupyter-ai && \
+rm /tmp/requirements.txt
+USER root
+
+# Install full Jupyter AI (frontend + backend)
+RUN pip install "jupyter-ai[jupyterlab]"
+
+# Enable the server extension
+RUN jupyter server extension enable jupyter_ai
+
+USER jovyan

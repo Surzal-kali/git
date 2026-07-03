@@ -1,4 +1,4 @@
-8# Final Bootcamp Simulation (Due Date: 06/29/2026)
+# Final Bootcamp Simulation (Due Date: 06/29/2026)
 
 ## Scenario
 
