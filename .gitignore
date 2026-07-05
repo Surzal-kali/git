@@ -18,3 +18,7 @@ nohup.out
 .env
 hydra.restore
 payloads/reverse_shell.png
+dockerstuff/dockerstuff/OpenWebUI/data/webui.db-shm
+.gitignore
+dockerstuff/dockerstuff/OpenWebUI/data/vector_db/chroma.sqlite3
+dockerstuff/dockerstuff/OpenWebUI/data/webui.db-wal

@@ -17,7 +17,8 @@ services:
       - ./OpenWebUI/tools:/app/backend/data/tools:ro
       - ./SurzsEnviro:/workspace/SurzsEnviro:rw
       - ./dockerstuff:/workspace/dockerstuff
-  
+      - ./dockerstuff/OpenWebUI/data:/app/backend/data:rw
+
   jupyter:
     build:
       context: .
