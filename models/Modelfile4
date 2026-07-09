@@ -1,0 +1,3 @@
+from ministral-3:3b
+
+parameter num_ctx 16384
