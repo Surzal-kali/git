@@ -1,0 +1,11 @@
+# Open WebUI
+OLLAMA_BASE_URL=http://127.0.0.1:11434
+RAG_EMBEDDING_ENGINE=ollama
+RAG_EMBEDDING_MODEL=nomic-embed-text
+
+# Terminal Server
+OPEN_TERMINAL_API_KEY=change-me
+CORS_ALLOWED_ORIGINS=http://localhost:8080
+
+# Trainer
+TRAINER_CHECKPOINT_DIR=/workspace/checkpoints

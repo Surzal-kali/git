@@ -22,3 +22,4 @@ dockerstuff/dockerstuff/OpenWebUI/data/webui.db-shm
 .gitignore
 dockerstuff/dockerstuff/OpenWebUI/data/vector_db/chroma.sqlite3
 dockerstuff/dockerstuff/OpenWebUI/data/webui.db-wal
+.env 
