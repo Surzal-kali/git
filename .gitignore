@@ -24,3 +24,4 @@ dockerstuff/dockerstuff/OpenWebUI/data/vector_db/chroma.sqlite3
 dockerstuff/dockerstuff/OpenWebUI/data/webui.db-wal
 .env
 
+VulnForge/dockerfeast/vulhub
