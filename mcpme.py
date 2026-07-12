@@ -22,15 +22,14 @@ KALI_COMMAND_TOOL = {
         "required": ["command"]
     }
 }
-
-
+# testing FIM/NES you there? helllooooo
 async def execute_kali_command(command: str) -> dict:
     """Execute a command with security checks"""
     if not command:
         return {"type": "error", "text": "Command cannot be empty"}
     
     # Block obvious shell injection patterns
-    dangerous_patterns = [r'&&', r'\|\|', r'\$\(', r'`', r';', r'\|']
+    dangerous_patterns = [r'\|\|', r'\$\(', r'`', r';']
     for pattern in dangerous_patterns:
         if re.search(pattern, command):
             logger.warning(f"Blocked command with dangerous pattern: {command}")
@@ -125,9 +124,9 @@ async def mcp_endpoint(request: Request):
                 "isError": result.get("type") == "error"
             },
             "id": request_id
-        }
+        } 
     
-    # Unknown method
+    # Unknown method (just in case)
     else:
         return {
             "jsonrpc": "2.0",
