@@ -5,9 +5,9 @@ services:
       dockerfile: Dockerfile.open-webui
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "9000:8080"
     environment:
-      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL}
+      OLLAMA_BASE_URL: http://host.docker.internal:11434/v1
       SCARF_NO_ANALYTICS: "true"
       DO_NOT_TRACK: "true"
       ANONYMIZED_TELEMETRY: "false"
@@ -27,7 +27,7 @@ services:
     ports:
       - "8888:8888"
     environment:
-      JUPYTER_AI_OLLAMA_BASE_URL: ${OLLAMA_BASE_URL}
+      JUPYTER_AI_OLLAMA_BASE_URL: http://host.docker.internal:11434/v1
       SCARF_NO_ANALYTICS: "true"
       DO_NOT_TRACK: "true"
       ANONYMIZED_TELEMETRY: "false"

@@ -1,5 +1,7 @@
 # Earth Secure Messaging — 192.168.56.112:443
 
+note to self, apparently the XOR key is "climatechangebad4human" 
+
 ## Target Overview
 
 | Field | Value |
