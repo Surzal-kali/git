@@ -37,7 +37,7 @@ KALI_COMMAND_TOOL = {
     }
 }
 
-JOB_STATUS_TOOL = {
+JOB_STATUS_TOOL = { 
     "name": "job_status",
     "description": "Check the status and results of a command job",
     "inputSchema": {
@@ -216,7 +216,7 @@ async def mcp_endpoint(request: Request):
                     "isError": False
                 },
                 "id": request_id
-            }
+            } 
         
         elif tool_name == "job_status":
             job_id = arguments.get("job_id", "")
@@ -237,7 +237,7 @@ async def mcp_endpoint(request: Request):
                 "id": request_id
             } 
     
-    # Unknown method (just in case)
+    # Un handled method
     else:
         return {
             "jsonrpc": "2.0",

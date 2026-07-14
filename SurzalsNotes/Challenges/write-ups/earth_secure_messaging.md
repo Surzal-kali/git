@@ -253,5 +253,10 @@ The user-supplied `message_key` field is likely used directly as the XOR key. Th
 5. **Test message format** — Send structured messages to identify headers/padding patterns
 
 ---
-*Scan date: 2026-06-17*
-*Scanner: Manual HTTPS enumeration with httpx + SSL + Python analysis*
+
+*Scan date: 2026-06-17* 
+*Scanner: Manual HTTPS enumeration with httpx + SSL + Python analysis*  
+----
+So: we need 
+
+2 + 2 is eq
